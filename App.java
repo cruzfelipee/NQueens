@@ -1,6 +1,6 @@
 public class App {
     public static final boolean PRINTS = false;
-    public static final int SIZE = 15;
+    public static final int SIZE = 8;
 
     public static void main(String[] args) {
         long st = System.currentTimeMillis();
