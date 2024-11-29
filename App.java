@@ -1,16 +1,30 @@
 public class App {
-    public static final boolean PRINTS = false;
-    public static final int SIZE = 8;
+    public static boolean logs = false;
 
     public static void main(String[] args) {
         long st = System.currentTimeMillis();
 
-        Board board = new Board(SIZE);
+        int size = 8; // Default value
+        boolean showProgress = false;
+
+        for (String arg : args) {
+            if (arg.startsWith("--size=")) {
+                size = Integer.parseInt(arg.substring("--size=".length()));
+            } else if (arg.equals("--log")) {
+                logs = true;
+            } else if (arg.equals("--show-progress")) {
+                showProgress = true;
+            }
+        }
+
+        Board board = new Board(size);
         int solutions = 0;
 
-        for (int i = 0; i < SIZE; i++) {
+        for (int i = 0; i < size; i++) {
             solutions += solve(0, i, board);
-            System.out.println("solved " + (i + 1) + "/" + SIZE);
+            if (showProgress) {
+                System.out.println("solved " + (i + 1) + "/" + size);
+            }
         }
 
         System.out.println("Found " + solutions + " unique solutions after " + (System.currentTimeMillis() - st)/1000 + "s");
@@ -24,7 +38,7 @@ public class App {
         board.setPosition(x, y, true);
 
         if (x == board.getBoardSize() - 1) {
-            if (PRINTS) {
+            if (logs) {
                 System.err.println("Solution:");
                 System.out.println(board);
                 System.err.println();
