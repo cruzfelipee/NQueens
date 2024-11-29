@@ -10,12 +10,9 @@ public class Board {
         return x >= 0 && y >= 0 && x < board.length && y < board.length;
     }
 
-    public boolean isQueenValid(int x, int y)   {
-        //if (!this.board[x][y]) {System.out.println(x + ";" + y + " is empty"); return true;} // empty squares are always valid 
-
-        //System.out.println("starting validation of positin" + x + " " + y);
-
-        for (int dx = -1; dx <= 1; dx++) //if queen doesnt see other queen
+    // checks if queen doesnt see other queens in any direction
+    public boolean isQueenValid(int x, int y) {
+        for (int dx = -1; dx <= 1; dx++)
             for (int dy = -1; dy <= 1; dy++)
                 if ((dy != 0 || dx != 0) && raycast(x + dx, y + dy, dx, dy))
                     return false;
@@ -23,9 +20,8 @@ public class Board {
         return true;
     }
 
+    // recursively walks in a direction until it finds a queen
     public boolean raycast(int sx, int sy, int dx, int dy) {
-       // System.out.println("Raycasting from " + sx + " " + sy + " to " + dx + " " + dy);
-
         if (!isPositionValid(sx, sy)) {return false;}
         if (this.board[sx][sy]) {return true;}
 

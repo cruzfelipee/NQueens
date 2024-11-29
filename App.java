@@ -1,7 +1,10 @@
 public class App {
+    public static final boolean PRINTS = false;
     public static final int SIZE = 15;
 
     public static void main(String[] args) {
+        long st = System.currentTimeMillis();
+
         Board board = new Board(SIZE);
         int solutions = 0;
 
@@ -10,26 +13,35 @@ public class App {
             System.out.println("solved " + (i + 1) + "/" + SIZE);
         }
 
-        System.out.println("Found " + solutions / 4 + " unique solutions");
+        System.out.println("Found " + solutions + " unique solutions after " + (System.currentTimeMillis() - st)/1000 + "s");
     }
 
     public static int solve(int x, int y, Board board) {
-        if (x >= board.getBoardSize()) {
-            //System.out.println("Solution:");
-            //System.out.println(board.toString());
-            return 1;
-        }
-
         if (!board.isPositionValid(x, y)) return 0;
 
         if (!board.isQueenValid(x, y)) return 0;
 
-        int solutions = 0;
-
         board.setPosition(x, y, true);
 
-        for (int i = 0; i < board.getBoardSize(); i ++)
+        if (x == board.getBoardSize() - 1) {
+            if (PRINTS) {
+                System.err.println("Solution:");
+                System.out.println(board);
+                System.err.println();
+            }
+
+            board.setPosition(x, y, false);
+
+            return 1;
+        }
+
+        int solutions = 0;
+
+        for (int i = 0; i < board.getBoardSize(); i ++) {
+            if (i == y) continue; // queens can't be in the same column
+
             solutions += solve(x + 1, i, board);
+        }
 
         board.setPosition(x, y, false);
 
